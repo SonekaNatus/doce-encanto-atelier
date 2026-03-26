@@ -1,0 +1,47 @@
+<section
+  class="hero"
+  id="inicio"
+  #heroRoot
+  aria-labelledby="hero-heading"
+>
+  <div class="hero__viewport" aria-hidden="true">
+    <div class="hero__media">
+      <img
+        class="hero__img"
+        src="/images/hero-cake.png"
+        alt=""
+        width="1600"
+        height="900"
+        decoding="async"
+        fetchpriority="high"
+      />
+    </div>
+  </div>
+
+  <div class="hero__shade" aria-hidden="true"></div>
+
+  <div class="hero__blur hero__blur--top" aria-hidden="true"></div>
+  <div class="hero__blur hero__blur--bottom" aria-hidden="true"></div>
+
+  <div class="hero__inner" #heroInner>
+    <p class="hero__eyebrow">Doce Encanto Ateliê</p>
+    <h1 class="hero__title" id="hero-heading">
+      Descubra o sabor<br />
+      do seu momento especial
+    </h1>
+    <p class="hero__lead">
+      Bolos artesanais sob encomenda, feitos com ingredientes selecionados e o cuidado de quem ama
+      transformar ocasiões em memórias doces.
+    </p>
+    <div class="hero__actions">
+      <a class="hero__btn hero__btn--primary" [href]="whatsappHref" target="_blank" rel="noopener noreferrer">
+        Encomendar
+      </a>
+      <a class="hero__btn hero__btn--ghost" routerLink="/produtos">Ver bolos</a>
+    </div>
+  </div>
+</section>
+
+<app-categories />
+<app-best-sellers></app-best-sellers>
+<app-faq></app-faq>
