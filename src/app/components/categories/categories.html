@@ -1,0 +1,84 @@
+<section
+  #sectionRoot
+  class="categories"
+  id="bolos"
+  [class.categories--visible]="isVisible()"
+  aria-labelledby="categories-heading"
+>
+  <div class="categories__inner">
+    <h2 class="categories__title" id="categories-heading">Conheça todos os nossos bolos</h2>
+
+    <div
+      class="categories__carousel"
+      role="region"
+      aria-roledescription="carrossel"
+      aria-label="Categorias de bolos"
+      (mouseenter)="onCarouselPointerEnter()"
+      (mouseleave)="onCarouselPointerLeave()"
+    >
+      <button
+        type="button"
+        class="categories__arrow categories__arrow--prev"
+        (click)="scrollPrev()"
+        aria-label="Ver categorias anteriores"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
+          <path
+            d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+          />
+        </svg>
+      </button>
+
+      <div
+        #scrollViewport
+        class="categories__viewport"
+        (pointerdown)="onViewportPointerDown($event)"
+        (pointermove)="onViewportPointerMove($event)"
+        (pointerup)="onViewportPointerUp($event)"
+        (pointercancel)="onViewportPointerCancel($event)"
+      >
+        <div
+          class="categories__track"
+          [class.categories__track--animating]="useTrackTransition()"
+          [style.transform]="'translate3d(' + translateX() + 'px, 0, 0)'"
+          (transitionend)="onTrackTransitionEnd($event)"
+        >
+          @for (slot of loopSlots; track slot.key) {
+            <a
+              class="category-card"
+              [href]="slot.cat.href"
+              [attr.aria-label]="slot.cat.title + ' — Saiba mais'"
+              [style.flex-basis.px]="cardWidthPx() || null"
+              [style.width.px]="cardWidthPx() || null"
+              (click)="onCardClick($event)"
+            >
+              <span
+                class="category-card__bg"
+                [style.background-image]="'url(' + slot.cat.image + ')'"
+                aria-hidden="true"
+              ></span>
+              <span class="category-card__overlay" aria-hidden="true"></span>
+              <span class="category-card__content">
+                <span class="category-card__name">{{ slot.cat.title }}</span>
+                <span class="category-card__pill">Saiba mais</span>
+              </span>
+            </a>
+          }
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="categories__arrow categories__arrow--next"
+        (click)="scrollNext()"
+        aria-label="Ver próximas categorias"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
+          <path
+            d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>

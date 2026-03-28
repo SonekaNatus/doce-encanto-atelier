@@ -1,0 +1,9 @@
+{
+    "outputDirectory": "dist/doce-encanto/browser",
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
+    ]
+}

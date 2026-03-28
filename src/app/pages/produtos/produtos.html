@@ -1,0 +1,41 @@
+<main class="page-produtos">
+  <!-- BANNER -->
+  <section class="page-banner">
+    <div class="banner-content">
+      <h1 class="banner-title">Nossos Bolos</h1>
+      <p class="banner-subtitle">O Catálogo Completo para o seu Momento Especial</p>
+    </div>
+  </section>
+
+  <!-- GRADE DE CARDS DE BOLOS -->
+  <section class="page-catalog" id="grade-bolos">
+    <div class="catalog-header">
+      <h2 class="section-title">Opções Irresistíveis</h2>
+      <p class="section-subtitle">Escolha o sabor perfeito para adoçar seu dia.</p>
+    </div>
+
+    <div class="catalog-grid">
+      @for (bolo of bolos; track bolo.title) {
+        <div class="catalog-card">
+          <div class="ca-img-placeholder">
+            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8" />
+              <path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1" />
+              <path d="M2 21h20" />
+            </svg>
+            <span class="img-label">Imagem do Bolo</span>
+          </div>
+          <div class="ca-card-content">
+            <h3 class="ca-title">{{ bolo.title }}</h3>
+            <p class="ca-desc">{{ bolo.description }}</p>
+            <div class="ca-footer">
+              <span class="ca-price">{{ bolo.price }}</span>
+              <button class="ca-btn" type="button">Comprar</button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+</main>
