@@ -1,6 +1,6 @@
 # 🎂 Doce Encanto Atelier
 
-Sistema web para uma doceria artesanal, desenvolvido com Angular.
+Sistema web para uma boleira artesanal, desenvolvido com Angular.
 
 🔗 **Deploy:** [doce-encanto-atelier-ecru.vercel.app](https://doce-encanto-atelier-ecru.vercel.app)
 
