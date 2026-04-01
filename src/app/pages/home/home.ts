@@ -5,12 +5,14 @@ import {
   afterNextRender,
   inject,
   viewChild,
+  
 } from '@angular/core';
 import { CategoriesComponent } from '../../components/categories/categories';
 import { BestSellers } from '../../components/best-sellers/best-sellers';
 import { Faq } from '../../components/faq/faq';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Avaliacoes } from '../../components/avaliacoes/avaliacoes';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,10 +26,12 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [CategoriesComponent, BestSellers, Faq, RouterLink],
+  imports: [CategoriesComponent, BestSellers, Faq, RouterLink, Avaliacoes],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
+
+
 export class Home {
   private readonly heroRoot = viewChild<ElementRef<HTMLElement>>('heroRoot');
   private readonly heroInner = viewChild<ElementRef<HTMLElement>>('heroInner');
