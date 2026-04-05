@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    container_name: doce-encanto-db
+    environment:
+      POSTGRES_DB: doce_encanto
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: doce-encanto-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/doce_encanto
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      JWT_SECRET: doce-encanto-secret-key-muito-segura-256-bits-pelo-menos
+      JWT_EXPIRATION: 86400000
+      CORS_ALLOWED_ORIGINS: https://doce-encanto-atelier-vuqa.vercel.app,http://localhost:3000
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
