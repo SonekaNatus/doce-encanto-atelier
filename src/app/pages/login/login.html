@@ -1,0 +1,54 @@
+<main class="login-page">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-card__image">
+        <h2 class="login-card__welcome">Bem-vindo(a) ao Doce Encanto!</h2>
+        <p class="login-card__subtitle">Os melhores bolos e doces artesanais pertinho de você.</p>
+      </div>
+      
+      <div class="login-card__form-wrapper">
+        <form class="login-form" (submit)="onSubmit($event)">
+          <h3 class="login-form__title">{{ isLogin() ? 'Acesse sua conta' : 'Crie sua conta' }}</h3>
+          
+          @if (!isLogin()) {
+            <div class="form-group">
+              <label for="name">Nome completo</label>
+              <input type="text" id="name" placeholder="Ex: Maria Eduarda" required>
+            </div>
+          }
+          
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" placeholder="seu@email.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" id="password" placeholder="••••••••" required>
+          </div>
+          
+          @if (isLogin()) {
+            <div class="form-options">
+              <label class="checkbox-label">
+                <input type="checkbox"> Lembrar-me
+              </label>
+              <a href="javascript:void(0)" class="forgot-password">Esqueceu a senha?</a>
+            </div>
+          }
+          
+          <button type="submit" class="btn-primary">
+            {{ isLogin() ? 'Entrar' : 'Cadastrar' }}
+          </button>
+          
+          <div class="toggle-mode">
+            @if (isLogin()) {
+              <span>Ainda não tem uma conta? <a href="javascript:void(0)" (click)="toggleMode()">Cadastre-se</a></span>
+            } @else {
+              <span>Já tem uma conta? <a href="javascript:void(0)" (click)="toggleMode()">Acesse aqui</a></span>
+            }
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
