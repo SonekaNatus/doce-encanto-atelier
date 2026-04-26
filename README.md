@@ -1,76 +1,74 @@
-# 🎂 Doce Encanto Atelier
+# 🎂 Doce Encanto API
 
-Sistema web para uma boleira artesanal, desenvolvido com Angular.
+API REST em Spring Boot para o Ateliê Doce Encanto — bolos artesanais sob encomenda.
 
-🔗 **Deploy:** [doce-encanto-atelier-ecru.vercel.app](https://doce-encanto-atelier-ecru.vercel.app)
+## 🚀 Como rodar
 
----
-
-## 🚀 Tecnologias
-
-- [Angular](https://angular.io/) — Framework front-end
-- [TypeScript](https://www.typescriptlang.org/) — Linguagem principal
-- [SCSS](https://sass-lang.com/) — Estilização
-- [Vercel](https://vercel.com/) — Deploy e hospedagem
-
----
-
-## 📁 Estrutura do Projeto
-```
-doce-encanto-atelier/
-├── public/
-│   ├── assets/         # Imagens e recursos estáticos
-│   └── images/
-├── src/
-│   ├── app/
-│   │   ├── components/ # Componentes reutilizáveis
-│   │   │   ├── header/
-│   │   │   ├── footer/
-│   │   │   ├── best-sellers/
-│   │   │   ├── categories/
-│   │   │   └── faq/
-│   │   └── pages/      # Páginas da aplicação
-│   │       ├── home/
-│   │       └── produtos/
-│   └── styles.scss
-├── angular.json
-└── package.json
-```
-
----
-
-## ⚙️ Como rodar localmente
-
-**Pré-requisitos:** Node.js e Angular CLI instalados.
+### Opção 1: Docker Compose (recomendado)
 ```bash
-# Clone o repositório
-git clone https://github.com/SonekaNatus/doce-encanto-atelier.git
+docker-compose up -d
+```
+Acesse: http://localhost:8080/swagger-ui.html
 
-# Acesse a pasta
-cd doce-encanto-atelier
-
-# Instale as dependências
-npm install
-
-# Rode o servidor de desenvolvimento
-ng serve
+### Opção 2: Local
+1. Instale PostgreSQL e crie o banco `doce_encanto`
+2. Ajuste `src/main/resources/application.properties`
+3. Execute:
+```bash
+./mvnw spring-boot:run
 ```
 
-Acesse em: [http://localhost:4200](http://localhost:4200)
+## 🔑 Login admin padrão
+- Email: `admin@doceencanto.com.br`
+- Senha: `admin123`
 
----
+## 📋 Endpoints
 
-## 🌿 Branches
+### Públicos (sem autenticação)
+| Método | URL | Descrição |
+|--------|-----|-----------|
+| POST | `/auth/login` | Login |
+| GET | `/api/produtos` | Listar produtos disponíveis |
+| GET | `/api/produtos?categoria=BOLO_DECORADO` | Filtrar por categoria |
+| GET | `/api/produtos/{id}` | Detalhe do produto |
+| POST | `/api/pedidos` | Criar encomenda |
+| GET | `/api/pedidos/consulta/{numeroPedido}` | Consultar status |
+| POST | `/api/contato` | Enviar mensagem |
 
-| Branch | Descrição |
-|--------|-----------|
-| `main` | Versão estável |
-| `Front-end` | Desenvolvimento do front-end |
+### Admin (requer Bearer Token)
+| Método | URL | Descrição |
+|--------|-----|-----------|
+| GET | `/admin/dashboard` | Resumo estatísticas |
+| GET | `/admin/produtos` | Todos os produtos |
+| POST | `/admin/produtos` | Criar produto |
+| PUT | `/admin/produtos/{id}` | Editar produto |
+| DELETE | `/admin/produtos/{id}` | Deletar produto |
+| GET | `/admin/pedidos` | Listar pedidos |
+| GET | `/admin/pedidos?status=PENDENTE` | Filtrar por status |
+| GET | `/admin/pedidos?data=2025-12-25` | Filtrar por data |
+| PATCH | `/admin/pedidos/{id}/status` | Atualizar status |
+| GET | `/admin/contatos` | Ver mensagens |
+| GET | `/admin/contatos?naoLidas=true` | Mensagens não lidas |
+| PATCH | `/admin/contatos/{id}/lido` | Marcar como lida |
 
----
+## 📦 Categorias de produto
+`BOLO_DECORADO`, `BOLO_NO_POTE`, `CUPCAKE`, `BRIGADEIRO`, `TORTA`, `DOCINHOS`, `OUTROS`
 
-## 👥 Contribuidores
+## 💳 Formas de pagamento
+`PIX`, `CARTAO_CREDITO`, `CARTAO_DEBITO`, `DINHEIRO`, `TRANSFERENCIA`
 
-- **SonekaNatus** — Kauã Victor
-- **Txvin** — Otavio Henrique
--           - Arthur Vaz
+## 📊 Status do pedido
+`PENDENTE` → `CONFIRMADO` → `EM_PRODUCAO` → `PRONTO` → `ENTREGUE` (ou `CANCELADO`)
+
+## 🔒 Autenticação
+```bash
+# Login
+POST /auth/login
+{ "email": "admin@doceencanto.com.br", "senha": "admin123" }
+
+# Usar token nas rotas admin
+Authorization: Bearer <token>
+```
+
+## 📖 Documentação Swagger
+Disponível em: `http://localhost:8080/swagger-ui.html`

@@ -1,3 +1,37 @@
+<<<<<<< HEAD
+# Maven
+target/
+*.jar
+*.war
+*.class
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Spring Boot
+application-local.properties
+application-local.yml
+
+# Variáveis de ambiente
+.env
+*.env
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.dbD
+=======
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 # Compiled output
@@ -42,3 +76,4 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+>>>>>>> 6d5d16f3d5df7555d96bc80b817838e4f76263c8
