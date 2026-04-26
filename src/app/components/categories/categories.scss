@@ -1,0 +1,225 @@
+$gap: 1.25rem;
+
+.categories {
+  background: #ffffff;
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem);
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity 0.75s ease,
+    transform 0.75s ease;
+}
+
+.categories--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .categories {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.categories__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.categories__title {
+  margin: 0 0 clamp(1.75rem, 4vw, 2.5rem);
+  font-family: var(--font-serif);
+  font-size: clamp(1.65rem, 3.8vw, 2.35rem);
+  font-weight: 600;
+  text-align: center;
+  color: #2a1f19;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.categories__carousel {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(0.5rem, 2vw, 1rem);
+}
+
+.categories__viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+}
+
+.categories__viewport:active {
+  cursor: grabbing;
+}
+
+.categories__track {
+  display: flex;
+  gap: $gap;
+  padding: 0.35rem 0 0.5rem;
+  will-change: transform;
+}
+
+.categories__track--animating {
+  transition: transform 0.48s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .categories__track--animating {
+    transition: none;
+  }
+}
+
+.category-card {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  aspect-ratio: 4 / 5;
+  min-height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transform: scale(1);
+  transition: transform 0.35s ease;
+  box-shadow: 0 12px 36px rgba(42, 31, 25, 0.12);
+  outline: none;
+}
+
+.category-card:focus-visible {
+  box-shadow:
+    0 12px 36px rgba(42, 31, 25, 0.12),
+    0 0 0 3px #ffffff,
+    0 0 0 5px #3d2c24;
+}
+
+.category-card:hover {
+  transform: scale(1.03);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-card {
+    transition: none;
+  }
+
+  .category-card:hover {
+    transform: none;
+  }
+}
+
+.category-card__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.02);
+}
+
+.category-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(15, 10, 8, 0.88) 0%,
+    rgba(15, 10, 8, 0.45) 42%,
+    rgba(15, 10, 8, 0.08) 72%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.category-card__content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.1rem 1.15rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  z-index: 1;
+}
+
+.category-card__name {
+  font-family: var(--font-sans);
+  font-size: clamp(0.82rem, 1.35vw, 0.95rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+  color: #ffffff;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+}
+
+.category-card__pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.38rem 0.95rem;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #2a1f19;
+  background: #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.categories__arrow {
+  flex-shrink: 0;
+  align-self: center;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: #2a1f19;
+  color: #fffdf9;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.2s ease;
+  box-shadow: 0 4px 16px rgba(42, 31, 25, 0.2);
+}
+
+.categories__arrow:hover {
+  background: #3d2c24;
+  transform: scale(1.05);
+}
+
+.categories__arrow:focus-visible {
+  outline: 2px solid #c9a18a;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .categories__arrow:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .categories__carousel {
+    gap: 0.35rem;
+  }
+
+  .categories__arrow {
+    width: 38px;
+    height: 38px;
+  }
+
+  .categories__arrow svg {
+    width: 18px;
+    height: 18px;
+  }
+}
