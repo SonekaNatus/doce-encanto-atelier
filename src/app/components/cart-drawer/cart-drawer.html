@@ -1,0 +1,42 @@
+<div class="cart-overlay" (click)="closeDrawer()">
+  <div class="cart-sidebar" (click)="$event.stopPropagation()">
+    <div class="cart-header">
+      <h2>Seu Carrinho</h2>
+      <button class="close-btn" (click)="closeDrawer()">&times;</button>
+    </div>
+
+    <div class="cart-content">
+      @if (cartService.items().length === 0) {
+        <div class="empty-cart">
+          <p class="empty-title">Carrinho Vazio!</p>
+          <p class="empty-subtitle">Adicione algum dos nossos bolos deliciosos</p>
+          <button class="btn-primary" (click)="closeDrawer()" routerLink="/cardapio">Ver cardápio</button>
+        </div>
+      } @else {
+        <div class="cart-items">
+          @for (item of cartService.items(); track item.id) {
+            <div class="cart-item">
+              <img [src]="item.image" [alt]="item.title" class="item-img" onerror="this.src='/images/placeholder-cake.png'">
+              <div class="item-info">
+                <p class="item-name">{{ item.title }}</p>
+                <div class="item-details">
+                  <span class="item-qty">{{ item.weight.toFixed(3) }}kg</span>
+                  <span class="item-price">R$ {{ item.totalPrice.toFixed(2) }}</span>
+                </div>
+              </div>
+              <button class="remove-btn" (click)="removeItem(item.id)">X</button>
+            </div>
+          }
+        </div>
+
+        <div class="cart-footer">
+          <div class="total-row">
+            <span>Total:</span>
+            <span class="total-price">R$ {{ cartService.total().toFixed(2) }}</span>
+          </div>
+          <button class="btn-checkout" (click)="checkout()">Continuar com a compra</button>
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -127,6 +127,9 @@ $font-stack: inherit;
 
     .bs-btn {
       width: 100%;
+      display: block; // Fix for anchor tag
+      text-align: center; // Center text in anchor
+      text-decoration: none; // Remove underline
       background-color: $bs-accent;
       color: #fff;
       border: none;
@@ -137,9 +140,11 @@ $font-stack: inherit;
       font-family: inherit;
       cursor: pointer;
       transition: background-color 0.2s ease;
+      box-sizing: border-box; // Ensure padding doesn't break 100% width
 
       &:hover {
         background-color: $bs-hover;
+        text-decoration: none; // Keep underline removed on hover
       }
     }
   }

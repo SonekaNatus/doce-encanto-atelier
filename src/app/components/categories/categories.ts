@@ -66,31 +66,31 @@ export class CategoriesComponent {
       id: 'chocolate',
       title: 'Bolos de Chocolate',
       image: '/assets/categorias/chocolate.jpg',
-      href: '#bolos-chocolate',
+      href: '/cardapio#chocolate',
     },
     {
       id: 'brancos',
       title: 'Bolos Brancos',
       image: '/assets/categorias/brancos.jpg',
-      href: '#bolos-brancos',
+      href: '/cardapio#brancos',
     },
     {
       id: 'zero',
       title: 'Zero Açúcar',
       image: '/assets/categorias/zero.jpg',
-      href: '#bolos-zero',
+      href: '/cardapio#zero',
     },
     {
       id: 'caseiros',
       title: 'Bolos Caseiros',
       image: '/assets/categorias/caseiros.jpg',
-      href: '#bolos-caseiros',
+      href: '/cardapio#caseiros',
     },
     {
       id: 'especiais',
       title: 'Bolos Especiais',
       image: '/assets/categorias/especiais.jpg',
-      href: '#bolos-especiais',
+      href: '/cardapio#especiais',
       },
   ];
 

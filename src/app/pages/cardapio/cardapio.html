@@ -1,0 +1,150 @@
+<main class="page-cardapio">
+  <!-- BANNER -->
+  <section class="page-banner">
+    <div class="banner-content">
+      <h1 class="banner-title">Nossos Bolos</h1>
+      <p class="banner-subtitle">O Catálogo Completo para o seu Momento Especial</p>
+    </div>
+  </section>
+
+  <!-- GRADE DE CARDS DE BOLOS -->
+  <section class="page-catalog" id="grade-bolos">
+    <div class="catalog-header">
+      <div class="title-with-lines">
+        <span class="title-line"></span>
+        <h2 class="section-title">Nosso Cardápio</h2>
+        <span class="title-line"></span>
+      </div>
+      <p class="section-subtitle">Escolha o sabor perfeito para adoçar seu dia.</p>
+    </div>
+
+    @for (section of sections; track section.title) {
+    <div class="catalog-section" [id]="section.id">
+      <h3 class="section-category-title">{{ section.title }}</h3>
+      <div class="catalog-grid">
+        @for (bolo of section.items; track bolo.title) {
+        <div class="catalog-card">
+          <div class="ca-img-container">
+            @if (bolo.image) {
+            <img [src]="bolo.image" [alt]="bolo.title" class="ca-img">
+            } @else {
+            <div class="img-placeholder">
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8" />
+                <path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1" />
+                <path d="M2 21h20" />
+                <path d="M7 8v3" />
+                <path d="M12 8v3" />
+                <path d="M17 8v3" />
+                <path d="M7 4h.01" />
+                <path d="M12 4h.01" />
+                <path d="M17 4h.01" />
+              </svg>
+              <span class="placeholder-text">Foto em breve</span>
+            </div>
+            }
+          </div>
+          <div class="ca-card-content">
+            <h3 class="ca-title">{{ bolo.title }}</h3>
+            <p class="ca-desc">{{ bolo.description }}</p>
+            <div class="ca-footer">
+              <span class="ca-price">R$ {{ bolo.price.toFixed(2) }}/kg</span>
+              <button class="ca-btn" type="button" (click)="openModal(bolo)">Comprar</button>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </section>
+
+  <!-- MODAL DE COMPRA -->
+  @if (modalOpen && selectedBolo) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      @if (!showSuccess) {
+      <div class="modal-left">
+        @if (selectedBolo.image) {
+        <img [src]="selectedBolo.image" [alt]="selectedBolo.title" class="modal-img">
+        } @else {
+        <div class="img-placeholder">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8" />
+            <path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1" />
+            <path d="M2 21h20" />
+            <path d="M7 8v3" />
+            <path d="M12 8v3" />
+            <path d="M17 8v3" />
+            <path d="M7 4h.01" />
+            <path d="M12 4h.01" />
+            <path d="M17 4h.01" />
+          </svg>
+          <span class="placeholder-text">Foto em breve</span>
+        </div>
+        }
+      </div>
+      <div class="modal-right">
+        <h2 class="modal-title">{{ selectedBolo.title }}</h2>
+        <p class="modal-desc">{{ selectedBolo.description }}</p>
+
+        <div class="modal-question">
+          <p>Este bolo será para quantas pessoas?</p>
+          <div class="option-buttons">
+            <button [class.active]="selectedOption === 4" (click)="selectOption(4)">4</button>
+            <button [class.active]="selectedOption === 6" (click)="selectOption(6)">6</button>
+            <button [class.active]="selectedOption === 8" (click)="selectOption(8)">8</button>
+            <button [class.active]="selectedOption === 'custom'" (click)="selectOption('custom')">Customizado</button>
+          </div>
+        </div>
+
+        <div class="modal-footer-container">
+          <div class="modal-info-row">
+            <div class="weight-display">
+              @if (selectedOption !== 'custom') {
+              <span class="fixed-weight">{{ calculatedWeight.toFixed(3) }}kg</span>
+              } @else {
+              <div class="custom-input-container">
+                <div class="custom-input-wrapper">
+                  <input type="number" [(ngModel)]="customWeight" (input)="onCustomWeightChange($event)" min="0.1"
+                    step="0.1" [class.input-error]="isWeightInvalid">
+                  <span class="unit">kg</span>
+                </div>
+                <div class="error-msg-wrapper">
+                  @if (isWeightInvalid) {
+                  <span class="error-msg">O tamanho máximo é de 5 kilos!</span>
+                  }
+                </div>
+              </div>
+              }
+            </div>
+            <div class="price-display">
+              <span class="currency">R$</span>
+              <span class="value">{{ totalPrice.toFixed(2) }}</span>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+            <button class="btn-add" (click)="addToCart()" [disabled]="isWeightInvalid"
+              [class.btn-disabled]="isWeightInvalid">Adicionar ao carrinho</button>
+          </div>
+        </div>
+      </div>
+      } @else {
+      <div class="success-message">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h2>Bolo adicionado ao carrinho com sucesso!</h2>
+      </div>
+      }
+    </div>
+  </div>
+  }
+</main>

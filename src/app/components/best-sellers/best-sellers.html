@@ -26,7 +26,7 @@
             <h3 class="bs-name">{{ product.name }}</h3>
             <p class="bs-desc">{{ product.description }}</p>
             <div class="bs-price">{{ product.price }}</div>
-            <button class="bs-btn" type="button">Encomendar</button>
+            <a class="bs-btn" routerLink="/cardapio" [queryParams]="{ bolo: product.name }">Encomendar</a>
           </div>
         </div>
       }

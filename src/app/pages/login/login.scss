@@ -1,12 +1,12 @@
 @import '../../../styles.scss';
 
 .login-page {
-  /* Use a min-height considering the header (since it's already rendered outside) */
-  min-height: calc(100vh - 76px);
+  /* Use a min-height considering the header */
+  min-height: calc(100vh - 80px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
+  padding: 1rem 2rem 4rem 2rem;
   background-color: #faf7f2;
 }
 

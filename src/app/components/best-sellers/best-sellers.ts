@@ -1,8 +1,10 @@
 import { Component, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-best-sellers',
   standalone: true,
+  imports: [RouterLink],
   templateUrl: './best-sellers.html',
   styleUrl: './best-sellers.scss'
 })
@@ -10,10 +12,10 @@ export class BestSellers implements OnInit, OnDestroy {
   private observer: IntersectionObserver | null = null;
 
   products = [
-    { name: 'Bolo de Chocolate', description: 'Massa cacau 50%, recheio cremoso e cobertura de ganache', price: 'R$ 89,90' },
-    { name: 'Bolo Red Velvet', description: 'Massa aveludada, recheio de cream cheese e frutas vermelhas', price: 'R$ 110,00' },
-    { name: 'Bolo de Morango', description: 'Massa branca, creme patissiere e morangos frescos', price: 'R$ 95,50' },
-    { name: 'Bolo de Pistache', description: 'Massa branca, recheio de brigadeiro de pistache', price: 'R$ 130,00' }
+    { name: 'Chocolatudo Premium', description: 'Massa cacau 50%, recheio cremoso e cobertura de ganache', price: 'R$ 89,90' },
+    { name: 'Red Velvet Clássico', description: 'Massa aveludada, recheio de cream cheese e frutas vermelhas', price: 'R$ 110,00' },
+    { name: 'Morango com Suspiro', description: 'Massa branca, creme patissiere e morangos frescos', price: 'R$ 95,50' },
+    { name: 'Pistache Supremo', description: 'Massa branca, recheio de brigadeiro de pistache', price: 'R$ 130,00' }
   ];
 
   constructor(private el: ElementRef) {}
