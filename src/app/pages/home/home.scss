@@ -36,13 +36,11 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(
-    105deg,
-    rgba(250, 247, 242, 0.94) 0%,
-    rgba(250, 247, 242, 0.55) 32%,
-    rgba(250, 247, 242, 0.12) 55%,
-    transparent 72%
-  );
+  background: linear-gradient(105deg,
+      rgba(250, 247, 242, 0.94) 0%,
+      rgba(250, 247, 242, 0.55) 32%,
+      rgba(250, 247, 242, 0.12) 55%,
+      transparent 72%);
 }
 
 .hero__blur {
@@ -60,24 +58,20 @@
   top: 0;
   mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 253, 249, 0.55) 0%,
-    rgba(255, 253, 249, 0.08) 70%,
-    transparent 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(255, 253, 249, 0.55) 0%,
+      rgba(255, 253, 249, 0.08) 70%,
+      transparent 100%);
 }
 
 .hero__blur--bottom {
   bottom: 0;
   mask-image: linear-gradient(to top, #000 0%, transparent 100%);
   -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 100%);
-  background: linear-gradient(
-    to top,
-    rgba(250, 247, 242, 0.65) 0%,
-    rgba(250, 247, 242, 0.12) 72%,
-    transparent 100%
-  );
+  background: linear-gradient(to top,
+      rgba(250, 247, 242, 0.65) 0%,
+      rgba(250, 247, 242, 0.12) 72%,
+      transparent 100%);
 }
 
 .hero__inner {
@@ -108,7 +102,7 @@
   font-weight: 600;
   line-height: 1.12;
   letter-spacing: -0.02em;
-  max-width: 12ch;
+  max-width: 13ch;
 }
 
 .hero__lead {
@@ -172,11 +166,9 @@
   }
 
   .hero__shade {
-    background: linear-gradient(
-      165deg,
-      rgba(250, 247, 242, 0.97) 0%,
-      rgba(250, 247, 242, 0.72) 42%,
-      rgba(250, 247, 242, 0.2) 100%
-    );
+    background: linear-gradient(165deg,
+        rgba(250, 247, 242, 0.97) 0%,
+        rgba(250, 247, 242, 0.72) 42%,
+        rgba(250, 247, 242, 0.2) 100%);
   }
 }

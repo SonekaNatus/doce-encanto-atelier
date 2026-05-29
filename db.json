@@ -1,0 +1,241 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Maria Eduarda Luz",
+      "email": "adm@doceencanto.com",
+      "password": "123456",
+      "adm": true
+    }
+  ],
+  "sections": [
+    {
+      "id": "1",
+      "title": "Novidades",
+      "image": "/assets/categorias/especiais.jpg"
+    },
+    {
+      "id": "2",
+      "title": "Bolos de chocolate",
+      "image": "/assets/categorias/chocolate.jpg"
+    },
+    {
+      "id": "3",
+      "title": "Bolos brancos",
+      "image": "/assets/categorias/brancos.jpg"
+    },
+    {
+      "id": "4",
+      "title": "Zero Açúcar",
+      "image": "/assets/categorias/zero.jpg"
+    },
+    {
+      "id": "5",
+      "title": "Bolos caseiros",
+      "image": "/assets/categorias/caseiros.jpg"
+    },
+    {
+      "id": "6",
+      "title": "Bolos Especiais",
+      "image": "/assets/categorias/especiais.jpg"
+    },
+    {
+      "title": "kjg",
+      "image": "",
+      "id": "jrv4NlHWJzc"
+    }
+  ],
+  "bolos": [
+    {
+      "id": "1",
+      "sectionId": 1,
+      "title": "Bolo de Pistache com Frutas Vermelhas",
+      "description": "Massa amanteigada de pistache com geleia artesanal de frutas vermelhas.",
+      "price": 135,
+      "image": "/assets/categorias/especiais.jpg",
+      "destaque": true
+    },
+    {
+      "id": "2",
+      "sectionId": 1,
+      "title": "Bolo Duo Trufado",
+      "description": "Combinação perfeita de trufa branca e trufa meio amargo.",
+      "price": 98,
+      "image": "/assets/categorias/chocolate.jpg",
+      "destaque": false
+    },
+    {
+      "id": "3",
+      "sectionId": 1,
+      "title": "Delícia de Abacaxi Zero",
+      "description": "Versão zero açúcar do nosso clássico de abacaxi com coco.",
+      "price": 110,
+      "image": "/assets/categorias/deliciadeabacaxizero.jpg",
+      "destaque": false
+    },
+    {
+      "id": "4",
+      "sectionId": 2,
+      "title": "Chocolatudo Premium",
+      "description": "Massa black com cacau 50%, recheio duplo de brigadeiro gourmet.",
+      "price": 95,
+      "image": "/assets/categorias/chocolate.jpg",
+      "destaque": true
+    },
+    {
+      "id": "5",
+      "sectionId": 2,
+      "title": "Sensação",
+      "description": "Massa de chocolate belga, recheio de brigadeiro de morango trufado.",
+      "price": 90,
+      "image": "/assets/categorias/sensacao.jpg",
+      "destaque": false
+    },
+    {
+      "id": "6",
+      "sectionId": 2,
+      "title": "Brigadeiro Belga",
+      "description": "Massa de chocolate com recheio de brigadeiro de chocolate belga.",
+      "price": 88,
+      "image": "/assets/categorias/brigadeirobelga.jpg",
+      "destaque": false
+    },
+    {
+      "id": "7",
+      "sectionId": 2,
+      "title": "Duo Chocolate",
+      "description": "Massa de chocolate com recheio de chocolate branco e ao leite.",
+      "price": 92,
+      "image": "/assets/categorias/duochocolate.jpg",
+      "destaque": false
+    },
+    {
+      "id": "8",
+      "sectionId": 3,
+      "title": "Ninho com Nutella",
+      "description": "Massa branca de baunilha, recheio de leite ninho e Nutella.",
+      "price": 105,
+      "image": "/assets/categorias/brancos.jpg",
+      "destaque": false
+    },
+    {
+      "id": "9",
+      "sectionId": 3,
+      "title": "Quatro Leites",
+      "description": "Massa branca com recheio cremoso de quatro leites.",
+      "price": 87,
+      "image": "/assets/categorias/brancos.jpg",
+      "destaque": false
+    },
+    {
+      "id": "10",
+      "sectionId": 3,
+      "title": "Morango com Suspiro",
+      "description": "Massa de baunilha, morangos frescos e creme belga.",
+      "price": 85,
+      "image": "/assets/categorias/morangocomsuspiro.jpg",
+      "destaque": true
+    },
+    {
+      "id": "11",
+      "sectionId": 3,
+      "title": "Abacaxi com Coco",
+      "description": "Massa pão de ló, creme de coco e abacaxi caramelizado.",
+      "price": 80,
+      "image": "/assets/categorias/abacaxicomcoco.jpg",
+      "destaque": false
+    },
+    {
+      "id": "12",
+      "sectionId": 4,
+      "title": "Chocolate Zero",
+      "description": "Massa de chocolate 70% cacau sem açúcar, recheio de ganache fit.",
+      "price": 110,
+      "image": "/assets/categorias/chocolatezero.jpg",
+      "destaque": false
+    },
+    {
+      "id": "13",
+      "sectionId": 4,
+      "title": "Frutas Vermelhas Zero",
+      "description": "Massa branca funcional com geleia de frutas vermelhas sem açúcar.",
+      "price": 115,
+      "image": "/assets/categorias/zero.jpg",
+      "destaque": false
+    },
+    {
+      "id": "14",
+      "sectionId": 4,
+      "title": "Coco Zero",
+      "description": "Bolo de coco fofinho sem açúcar e sem glúten.",
+      "price": 98,
+      "image": "/assets/categorias/cocozero.jpg",
+      "destaque": false
+    },
+    {
+      "id": "15",
+      "sectionId": 5,
+      "title": "Cenoura com Chocolate",
+      "description": "Clássico bolo de cenoura com cobertura de brigadeiro.",
+      "price": 45,
+      "image": "/assets/categorias/cenouracomchocolate.jpg",
+      "destaque": false
+    },
+    {
+      "id": "16",
+      "sectionId": 5,
+      "title": "Fubá com Goiabada",
+      "description": "Bolo de fubá cremoso com pedaços de goiabada.",
+      "price": 35,
+      "image": "/assets/categorias/fubacomgoiabada.jpg",
+      "destaque": false
+    },
+    {
+      "id": "17",
+      "sectionId": 5,
+      "title": "Milho Cremoso",
+      "description": "Bolo de milho verde super úmido e saboroso.",
+      "price": 38,
+      "image": "/assets/categorias/caseiros.jpg",
+      "destaque": false
+    },
+    {
+      "id": "18",
+      "sectionId": 5,
+      "title": "Laranja Especial",
+      "description": "Bolo de laranja natural com calda cítrica.",
+      "price": 32,
+      "image": "/assets/categorias/laranjaespecial.jpg",
+      "destaque": false
+    },
+    {
+      "id": "19",
+      "sectionId": 6,
+      "title": "Red Velvet Clássico",
+      "description": "Massa aveludada vermelha com creme de cream cheese.",
+      "price": 110,
+      "image": "/assets/categorias/redvelvetclassico.jpg",
+      "destaque": true
+    },
+    {
+      "id": "20",
+      "sectionId": 6,
+      "title": "Pistache Supremo",
+      "description": "Massa amanteigada de pistache e geleia de frutas vermelhas.",
+      "price": 130,
+      "image": "/assets/categorias/especiais.jpg",
+      "destaque": false
+    },
+    {
+      "id": "21",
+      "sectionId": 6,
+      "title": "Nozes Real",
+      "description": "Massa de nozes com recheio de doce de leite e nozes picadas.",
+      "price": 120,
+      "image": "/assets/categorias/nozesreal.jpg",
+      "destaque": false
+    }
+  ],
+  "imagens": [],
+  "$schema": "./node_modules/json-server/schema.json"
+}
