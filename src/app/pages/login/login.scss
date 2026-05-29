@@ -22,7 +22,7 @@
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(61, 44, 36, 0.08); /* Darker shadow based on #3d2c24 */
   overflow: hidden;
-  height: 550px;
+  min-height: 550px;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -191,4 +191,28 @@
       text-decoration: underline;
     }
   }
+}
+
+.form-error-banner {
+  background: #fdf0f0;
+  border: 1px solid #e8a8a8;
+  color: #c0392b;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.field-hint {
+  display: block;
+  font-size: 0.775rem;
+  color: #9a8880;
+  margin-top: 0.3rem;
+}
+
+.btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none !important;
 }

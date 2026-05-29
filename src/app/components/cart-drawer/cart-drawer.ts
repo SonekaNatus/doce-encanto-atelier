@@ -1,4 +1,4 @@
-import { Component, inject, signal, Output, EventEmitter } from '@angular/core';
+import { Component, inject, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/cart.service';
 import { RouterLink } from '@angular/router';
@@ -18,6 +18,14 @@ export class CartDrawer {
     this.close.emit();
   }
 
+  increaseQty(id: string) {
+    this.cartService.increaseQty(id);
+  }
+
+  decreaseQty(id: string) {
+    this.cartService.decreaseQty(id);
+  }
+
   removeItem(id: string) {
     this.cartService.removeItem(id);
   }
@@ -27,12 +35,14 @@ export class CartDrawer {
     if (items.length === 0) return;
 
     const itemsText = items
-      .map(item => `${item.weight.toFixed(1).replace('.', ',')}kg de ${item.title}`)
+      .map(item =>
+        `${item.quantity}x ${item.weight.toFixed(1).replace('.', ',')}kg de ${item.title}`
+      )
       .join(', ');
 
     const message = `Olá! Vim pelo site e gostaria de fazer uma encomenda de: ${itemsText}.`;
     const whatsappUrl = `https://wa.me/5511999999999?text=${encodeURIComponent(message)}`;
-    
+
     window.open(whatsappUrl, '_blank');
   }
 }

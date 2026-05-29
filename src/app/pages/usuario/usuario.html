@@ -1,0 +1,391 @@
+<main class="usuario-page">
+  <div class="usuario-container">
+
+    <!-- Greeting -->
+    <div class="usuario-header">
+      <h1 class="usuario-greeting">Olá, {{ user()?.name }}!</h1>
+      <button class="btn-logout" (click)="logout()">Sair</button>
+    </div>
+
+    <!-- Profile Card -->
+    <section class="profile-card">
+      <div class="profile-card__header">
+        <h2 class="profile-card__title">Meus dados</h2>
+        @if (!editing()) {
+          <button class="btn-icon btn-icon--edit" (click)="startEdit()" title="Editar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+        } @else {
+          <div class="profile-card__actions">
+            <button class="btn-icon btn-icon--cancel" (click)="cancelEdit()" title="Cancelar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <button class="btn-icon btn-icon--save" (click)="saveEdit()" [disabled]="saving()" title="Salvar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+          </div>
+        }
+      </div>
+
+      <div class="profile-fields">
+        <div class="form-group">
+          <label>Nome</label>
+          <input type="text"
+            [value]="editing() ? editName : user()?.name"
+            (input)="editName = $any($event.target).value"
+            [disabled]="!editing()" class="profile-input">
+        </div>
+
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" [value]="user()?.email" disabled class="profile-input">
+        </div>
+
+        <div class="form-group">
+          <label>Senha</label>
+          <div class="password-wrapper">
+            <input
+              [type]="showPassword() ? 'text' : 'password'"
+              [value]="editing() ? editPassword : user()?.password"
+              (input)="editPassword = $any($event.target).value"
+              [disabled]="!editing()"
+              class="profile-input">
+            @if (editing()) {
+              <button type="button" class="btn-eye" (click)="toggleShowPassword()">
+                @if (!showPassword()) {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                } @else {
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                }
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Admin Area -->
+    @if (isAdm()) {
+      <div class="admin-area">
+
+        <!-- Sessões Table -->
+        <section class="admin-section">
+          <div class="admin-section__header">
+            <h2 class="admin-section__title">Sessões</h2>
+            <button class="btn-add" (click)="openCreateSection()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Cadastrar Sessão
+            </button>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Nome da Sessão</th>
+                  <th>Qtd. de Bolos</th>
+                  <th>Imagem</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (section of sectionWithCount(); track section.id) {
+                  <tr>
+                    <td>{{ section.title }}</td>
+                    <td class="td-center">{{ section.count }}</td>
+                    <td class="td-image">{{ getImageName(section.image) }}</td>
+                    <td class="td-actions">
+                      <button class="btn-table btn-table--edit" (click)="openEditSection(section)">Editar</button>
+                      <button class="btn-table btn-table--delete" (click)="openDeleteSectionModal(section)">Excluir</button>
+                    </td>
+                  </tr>
+                }
+                @empty {
+                  <tr><td colspan="4" class="td-empty">Nenhuma sessão cadastrada.</td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Destaques Table -->
+        <section class="admin-section">
+          <div class="admin-section__header">
+            <h2 class="admin-section__title">Destaques</h2>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Sessão</th>
+                  <th>Preço</th>
+                  <th>Descrição</th>
+                  <th>Imagem</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (bolo of destaques(); track bolo.id) {
+                  <tr>
+                    <td>{{ bolo.title }}</td>
+                    <td>{{ getSectionName(bolo.sectionId) }}</td>
+                    <td class="td-price">R$ {{ bolo.price.toFixed(2) }}</td>
+                    <td class="td-desc">{{ truncate(bolo.description) }}</td>
+                    <td class="td-image">{{ getImageName(bolo.image) }}</td>
+                  </tr>
+                }
+                @empty {
+                  <tr><td colspan="5" class="td-empty">Nenhum bolo em destaque.</td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Produtos Table -->
+        <section class="admin-section">
+          <div class="admin-section__header">
+            <h2 class="admin-section__title">Produtos</h2>
+            <div class="admin-section__header-actions">
+              <button class="btn-add btn-add--secondary" (click)="openImageModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Adicionar Imagem
+              </button>
+              <button class="btn-add" (click)="openCreateBolo()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Cadastrar Bolo
+              </button>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Sessão</th>
+                  <th>Preço</th>
+                  <th>Descrição</th>
+                  <th>Imagem</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (bolo of bolos(); track bolo.id) {
+                  <tr>
+                    <td>{{ bolo.title }}</td>
+                    <td>{{ getSectionName(bolo.sectionId) }}</td>
+                    <td class="td-price">R$ {{ bolo.price.toFixed(2) }}</td>
+                    <td class="td-desc">{{ truncate(bolo.description) }}</td>
+                    <td class="td-image">{{ getImageName(bolo.image) }}</td>
+                    <td class="td-actions">
+                      <button class="btn-table btn-table--edit" (click)="openEditBolo(bolo)">Editar</button>
+                      <button class="btn-table btn-table--delete" (click)="openDeleteModal(bolo)">Excluir</button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    }
+  </div>
+</main>
+
+<!-- Bolo Modal -->
+@if (showBoloModal()) {
+  <div class="modal-overlay" [class.modal-overlay--visible]="modalAnimating()" (click)="closeBoloModal()">
+    <div class="modal" [class.modal--visible]="modalAnimating()" (click)="$event.stopPropagation()">
+      <div class="modal__header">
+        <h3 class="modal__title">{{ editingBolo() ? 'Editar Bolo' : 'Cadastrar Bolo' }}</h3>
+        <button class="modal__close" (click)="closeBoloModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal__body">
+        <div class="form-group" [class.form-group--error]="boloErrors['title']">
+          <label>Nome <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="boloForm.title" placeholder="Nome do bolo" class="modal-input">
+          @if (boloErrors['title']) { <span class="field-error">{{ boloErrors['title'] }}</span> }
+        </div>
+
+        <div class="form-group" [class.form-group--error]="boloErrors['description']">
+          <label>Descrição <span class="required">*</span></label>
+          <textarea [(ngModel)]="boloForm.description" placeholder="Descrição do bolo" class="modal-input modal-textarea" rows="3"></textarea>
+          @if (boloErrors['description']) { <span class="field-error">{{ boloErrors['description'] }}</span> }
+        </div>
+
+        <div class="form-row">
+          <div class="form-group" [class.form-group--error]="boloErrors['price']">
+            <label>Preço <span class="required">*</span></label>
+            <input type="number" [(ngModel)]="boloForm.price" placeholder="0.00" step="0.01" min="0" class="modal-input">
+            @if (boloErrors['price']) { <span class="field-error">{{ boloErrors['price'] }}</span> }
+          </div>
+
+          <div class="form-group" [class.form-group--error]="boloErrors['sectionId']">
+            <label>Sessão <span class="required">*</span></label>
+            <select [(ngModel)]="boloForm.sectionId" class="modal-input">
+              <option [value]="0" disabled>Selecione...</option>
+              @for (s of sections(); track s.id) {
+                <option [value]="s.id">{{ s.title }}</option>
+              }
+            </select>
+            @if (boloErrors['sectionId']) { <span class="field-error">{{ boloErrors['sectionId'] }}</span> }
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Imagem</label>
+          <select [(ngModel)]="boloForm.image" class="modal-input">
+            @for (img of availableImages; track img.value) {
+              <option [value]="img.value">{{ img.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group form-group--toggle">
+          <label class="toggle-label">
+            <span>Destaque</span>
+            <div class="toggle-switch" [class.toggle-switch--on]="boloForm.destaque" (click)="boloForm.destaque = !boloForm.destaque">
+              <div class="toggle-switch__thumb"></div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn-modal btn-modal--cancel" (click)="closeBoloModal()">Cancelar</button>
+        <button class="btn-modal btn-modal--confirm" (click)="submitBolo()">
+          {{ editingBolo() ? 'Salvar' : 'Criar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Section Modal -->
+@if (showSectionModal()) {
+  <div class="modal-overlay" [class.modal-overlay--visible]="sectionModalAnimating()" (click)="closeSectionModal()">
+    <div class="modal modal--small" [class.modal--visible]="sectionModalAnimating()" (click)="$event.stopPropagation()">
+      <div class="modal__header">
+        <h3 class="modal__title">{{ editingSection() ? 'Editar Sessão' : 'Cadastrar Sessão' }}</h3>
+        <button class="modal__close" (click)="closeSectionModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal__body">
+        <div class="form-group" [class.form-group--error]="sectionErrors['title']">
+          <label>Nome <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="sectionForm.title" placeholder="Nome da sessão" class="modal-input">
+          @if (sectionErrors['title']) { <span class="field-error">{{ sectionErrors['title'] }}</span> }
+        </div>
+
+        <div class="form-group">
+          <label>Imagem</label>
+          <select [(ngModel)]="sectionForm.image" class="modal-input">
+            @for (img of availableImages; track img.value) {
+              <option [value]="img.value">{{ img.label }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn-modal btn-modal--cancel" (click)="closeSectionModal()">Cancelar</button>
+        <button class="btn-modal btn-modal--confirm" (click)="submitSection()">
+          {{ editingSection() ? 'Salvar' : 'Criar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Image Upload Modal -->
+@if (showImageModal()) {
+  <div class="modal-overlay" [class.modal-overlay--visible]="imageModalAnimating()" (click)="closeImageModal()">
+    <div class="modal modal--small" [class.modal--visible]="imageModalAnimating()" (click)="$event.stopPropagation()">
+      <div class="modal__header">
+        <h3 class="modal__title">Adicionar Imagem</h3>
+        <button class="modal__close" (click)="closeImageModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal__body">
+        <div class="upload-area" (click)="fileInput.click()">
+          @if (selectedFile()) {
+            <div class="upload-area__selected">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span>{{ selectedFile()!.name }}</span>
+              <small>{{ (selectedFile()!.size / 1024).toFixed(0) }} KB</small>
+            </div>
+          } @else {
+            <div class="upload-area__placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+              <span>Clique para selecionar uma imagem</span>
+              <small>PNG, JPG, WEBP, GIF</small>
+            </div>
+          }
+        </div>
+        <input #fileInput type="file" accept="image/*" style="display:none" (change)="onFileSelected($event)">
+
+        @if (uploadError()) {
+          <span class="field-error" style="margin-top: 0.5rem; display: block;">{{ uploadError() }}</span>
+        }
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn-modal btn-modal--cancel" (click)="closeImageModal()">Cancelar</button>
+        <button class="btn-modal btn-modal--confirm" (click)="uploadImage()" [disabled]="!selectedFile() || uploadingImage()">
+          {{ uploadingImage() ? 'Adicionando...' : 'Adicionar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Delete Bolo Modal -->
+@if (showDeleteModal()) {
+  <div class="modal-overlay modal-overlay--visible" (click)="closeDeleteModal()">
+    <div class="modal modal--visible modal--small" (click)="$event.stopPropagation()">
+      <div class="modal__header">
+        <h3 class="modal__title">Confirmar exclusão</h3>
+        <button class="modal__close" (click)="closeDeleteModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <p class="delete-msg">Realmente deseja excluir o bolo <strong>{{ deletingBolo()?.title }}</strong>?</p>
+      </div>
+      <div class="modal__footer">
+        <button class="btn-modal btn-modal--cancel" (click)="closeDeleteModal()">Cancelar</button>
+        <button class="btn-modal btn-modal--danger" (click)="confirmDelete(false)">Excluir bolo</button>
+        <button class="btn-modal btn-modal--danger" (click)="confirmDelete(true)">Excluir com imagem</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Delete Section Modal -->
+@if (showDeleteSectionModal()) {
+  <div class="modal-overlay modal-overlay--visible" (click)="closeDeleteSectionModal()">
+    <div class="modal modal--visible modal--small" (click)="$event.stopPropagation()">
+      <div class="modal__header">
+        <h3 class="modal__title">Confirmar exclusão</h3>
+        <button class="modal__close" (click)="closeDeleteSectionModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <p class="delete-msg">Realmente deseja excluir a sessão <strong>{{ deletingSection()?.title }}</strong>?</p>
+      </div>
+      <div class="modal__footer">
+        <button class="btn-modal btn-modal--cancel" (click)="closeDeleteSectionModal()">Cancelar</button>
+        <button class="btn-modal btn-modal--danger" (click)="confirmDeleteSection(false)">Excluir sessão</button>
+        <button class="btn-modal btn-modal--danger" (click)="confirmDeleteSection(true)">Excluir com imagem</button>
+      </div>
+    </div>
+  </div>
+}

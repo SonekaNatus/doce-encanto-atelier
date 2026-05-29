@@ -1,26 +1,34 @@
-import { Component, ElementRef, OnInit, OnDestroy } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, ElementRef, OnInit, OnDestroy, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { CardapioService, Bolo } from '../../services/cardapio.service';
+import { ModalService } from '../../services/modal.service';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-best-sellers',
   standalone: true,
-  imports: [RouterLink],
+  imports: [CommonModule],
   templateUrl: './best-sellers.html',
   styleUrl: './best-sellers.scss'
 })
 export class BestSellers implements OnInit, OnDestroy {
+  private readonly cardapioService = inject(CardapioService);
+  private readonly router = inject(Router);
+  private readonly modalService = inject(ModalService);
+  readonly imageService = inject(ImageService);
   private observer: IntersectionObserver | null = null;
 
-  products = [
-    { name: 'Chocolatudo Premium', description: 'Massa cacau 50%, recheio cremoso e cobertura de ganache', price: 'R$ 89,90' },
-    { name: 'Red Velvet Clássico', description: 'Massa aveludada, recheio de cream cheese e frutas vermelhas', price: 'R$ 110,00' },
-    { name: 'Morango com Suspiro', description: 'Massa branca, creme patissiere e morangos frescos', price: 'R$ 95,50' },
-    { name: 'Pistache Supremo', description: 'Massa branca, recheio de brigadeiro de pistache', price: 'R$ 130,00' }
-  ];
+  destaques: Bolo[] = [];
 
   constructor(private el: ElementRef) {}
 
   ngOnInit(): void {
+    this.cardapioService.getDestaques().subscribe({
+      next: (bolos) => { this.destaques = bolos; },
+      error: () => {}
+    });
+
     this.observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -33,13 +41,16 @@ export class BestSellers implements OnInit, OnDestroy {
 
     setTimeout(() => {
       const target = this.el.nativeElement.querySelector('.bs-section');
-      if (target) {
-        this.observer?.observe(target);
-      }
+      if (target) this.observer?.observe(target);
     }, 0);
   }
 
   ngOnDestroy(): void {
     this.observer?.disconnect();
+  }
+
+  encomendar(bolo: Bolo) {
+    this.modalService.request(bolo.title);
+    this.router.navigate(['/cardapio'], { fragment: String(bolo.sectionId) });
   }
 }

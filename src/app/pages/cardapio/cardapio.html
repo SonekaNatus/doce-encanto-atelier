@@ -18,45 +18,66 @@
       <p class="section-subtitle">Escolha o sabor perfeito para adoçar seu dia.</p>
     </div>
 
-    @for (section of sections; track section.title) {
-    <div class="catalog-section" [id]="section.id">
-      <h3 class="section-category-title">{{ section.title }}</h3>
-      <div class="catalog-grid">
-        @for (bolo of section.items; track bolo.title) {
-        <div class="catalog-card">
-          <div class="ca-img-container">
-            @if (bolo.image) {
-            <img [src]="bolo.image" [alt]="bolo.title" class="ca-img">
-            } @else {
-            <div class="img-placeholder">
-              <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8" />
-                <path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1" />
-                <path d="M2 21h20" />
-                <path d="M7 8v3" />
-                <path d="M12 8v3" />
-                <path d="M17 8v3" />
-                <path d="M7 4h.01" />
-                <path d="M12 4h.01" />
-                <path d="M17 4h.01" />
-              </svg>
-              <span class="placeholder-text">Foto em breve</span>
-            </div>
-            }
+    @if (loading) {
+      <div class="loading-state">
+        <p>Carregando cardápio...</p>
+      </div>
+    } @else if (error) {
+      <div class="error-state">
+        <p>Não foi possível carregar o cardápio. Verifique se o servidor está rodando.</p>
+      </div>
+    } @else {
+      @for (section of sections; track section.id) {
+      <div class="catalog-section" [id]="section.id">
+        <h3 class="section-category-title">{{ section.title }}</h3>
+        @if (section.items.length === 0) {
+          <div class="section-empty">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/>
+              <path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/>
+              <path d="M2 21h20"/>
+              <path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/>
+              <path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/>
+            </svg>
+            <p>Essa sessão ainda está vazia — os bolos estão a caminho! 🎂</p>
           </div>
-          <div class="ca-card-content">
-            <h3 class="ca-title">{{ bolo.title }}</h3>
-            <p class="ca-desc">{{ bolo.description }}</p>
-            <div class="ca-footer">
-              <span class="ca-price">R$ {{ bolo.price.toFixed(2) }}/kg</span>
-              <button class="ca-btn" type="button" (click)="openModal(bolo)">Comprar</button>
+        } @else {
+        <div class="catalog-grid">
+          @for (bolo of section.items; track bolo.id) {
+          <div class="catalog-card">
+            <div class="ca-img-container">
+              <img [src]="imageService.getSrc(bolo.image)" [alt]="bolo.title" class="ca-img"
+                (error)="$any($event.target).style.display='none'; $any($event.target).nextElementSibling.style.display='flex'">
+              <div class="img-placeholder" [style.display]="bolo.image ? 'none' : 'flex'">
+                <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8" />
+                  <path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1" />
+                  <path d="M2 21h20" />
+                  <path d="M7 8v3" />
+                  <path d="M12 8v3" />
+                  <path d="M17 8v3" />
+                  <path d="M7 4h.01" />
+                  <path d="M12 4h.01" />
+                  <path d="M17 4h.01" />
+                </svg>
+                <span class="placeholder-text">Foto em breve</span>
+              </div>
+            </div>
+            <div class="ca-card-content">
+              <h3 class="ca-title">{{ bolo.title }}</h3>
+              <p class="ca-desc">{{ bolo.description }}</p>
+              <div class="ca-footer">
+                <span class="ca-price">R$ {{ bolo.price.toFixed(2) }}/kg</span>
+                <button class="ca-btn" type="button" (click)="openModal(bolo)">Comprar</button>
+              </div>
             </div>
           </div>
+          }
         </div>
         }
       </div>
-    </div>
+      }
     }
   </section>
 
@@ -66,10 +87,9 @@
     <div class="modal-card" (click)="$event.stopPropagation()">
       @if (!showSuccess) {
       <div class="modal-left">
-        @if (selectedBolo.image) {
-        <img [src]="selectedBolo.image" [alt]="selectedBolo.title" class="modal-img">
-        } @else {
-        <div class="img-placeholder">
+        <img [src]="imageService.getSrc(selectedBolo.image)" [alt]="selectedBolo.title" class="modal-img"
+          (error)="$any($event.target).style.display='none'; $any($event.target).nextElementSibling.style.display='flex'">
+        <div class="img-placeholder" [style.display]="selectedBolo.image ? 'none' : 'flex'">
           <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8" />
@@ -84,7 +104,6 @@
           </svg>
           <span class="placeholder-text">Foto em breve</span>
         </div>
-        }
       </div>
       <div class="modal-right">
         <h2 class="modal-title">{{ selectedBolo.title }}</h2>

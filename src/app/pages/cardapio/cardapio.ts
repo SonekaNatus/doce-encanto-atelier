@@ -1,8 +1,11 @@
-import { Component, inject, signal, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from '../../services/cart.service';
+import { CardapioService, SectionWithBolos, Bolo } from '../../services/cardapio.service';
+import { ImageService } from '../../services/image.service';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-cardapio',
@@ -13,98 +16,83 @@ import { CartService } from '../../services/cart.service';
 })
 export class Cardapio implements OnInit {
   protected readonly cartService = inject(CartService);
+  private readonly cardapioService = inject(CardapioService);
+  private readonly modalService = inject(ModalService);
   private readonly route = inject(ActivatedRoute);
   private readonly cdr = inject(ChangeDetectorRef);
+  readonly imageService = inject(ImageService);
 
-  sections = [
-    {
-      id: 'novidades',
-      title: 'Novidades',
-      items: [
-        { title: 'Bolo de Pistache com Frutas Vermelhas', description: 'Massa amanteigada de pistache com geleia artesanal de frutas vermelhas.', price: 135.0, image: '/assets/categorias/especiais.jpg' },
-        { title: 'Bolo Duo Trufado', description: 'Combinação perfeita de trufa branca e trufa meio amargo.', price: 98.0, image: '/assets/categorias/chocolate.jpg' },
-        { title: 'Delícia de Abacaxi Zero', description: 'Versão zero açúcar do nosso clássico de abacaxi com coco.', price: 110.0, image: '' }
-      ]
-    },
-    {
-      id: 'chocolate',
-      title: 'Bolos de chocolate',
-      items: [
-        { title: 'Chocolatudo Premium', description: 'Massa black com cacau 50%, recheio duplo de brigadeiro gourmet.', price: 95.0, image: '/assets/categorias/chocolate.jpg' },
-        { title: 'Sensação', description: 'Massa de chocolate belga, recheio de brigadeiro de morango trufado.', price: 90.0, image: '' },
-        { title: 'Brigadeiro Belga', description: 'Massa de chocolate com recheio de brigadeiro de chocolate belga.', price: 88.0, image: '' },
-        { title: 'Duo Chocolate', description: 'Massa de chocolate com recheio de chocolate branco e ao leite.', price: 92.0, image: '' }
-      ]
-    },
-    {
-      id: 'brancos',
-      title: 'Bolos brancos',
-      items: [
-        { title: 'Ninho com Nutella', description: 'Massa branca de baunilha, recheio de leite ninho e Nutella.', price: 105.0, image: '/assets/categorias/brancos.jpg' },
-        { title: 'Quatro Leites', description: 'Massa branca com recheio cremoso de quatro leites.', price: 87.0, image: '/assets/categorias/brancos.jpg' },
-        { title: 'Morango com Suspiro', description: 'Massa de baunilha, morangos frescos e creme belga.', price: 85.0, image: '' },
-        { title: 'Abacaxi com Coco', description: 'Massa pão de ló, creme de coco e abacaxi caramelizado.', price: 80.0, image: '' }
-      ]
-    },
-    {
-      id: 'zero',
-      title: 'Zero Açúcar',
-      items: [
-        { title: 'Chocolate Zero', description: 'Massa de chocolate 70% cacau sem açúcar, recheio de ganache fit.', price: 110.0, image: '' },
-        { title: 'Frutas Vermelhas Zero', description: 'Massa branca funcional com geleia de frutas vermelhas sem açúcar.', price: 115.0, image: '/assets/categorias/zero.jpg' },
-        { title: 'Coco Zero', description: 'Bolo de coco fofinho sem açúcar e sem glúten.', price: 98.0, image: '' }
-      ]
-    },
-    {
-      id: 'caseiros',
-      title: 'Bolos caseiros',
-      items: [
-        { title: 'Cenoura com Chocolate', description: 'Clássico bolo de cenoura com cobertura de brigadeiro.', price: 45.0, image: '' },
-        { title: 'Fubá com Goiabada', description: 'Bolo de fubá cremoso com pedaços de goiabada.', price: 35.0, image: '' },
-        { title: 'Milho Cremoso', description: 'Bolo de milho verde super úmido e saboroso.', price: 38.0, image: 'assets/categorias/caseiros.jpg' },
-        { title: 'Laranja Especial', description: 'Bolo de laranja natural com calda cítrica.', price: 32.0, image: '' }
-      ]
-    },
-    {
-      id: 'especiais',
-      title: 'Bolos Especiais',
-      items: [
-        { title: 'Red Velvet Clássico', description: 'Massa aveludada vermelha com creme de cream cheese.', price: 110.0, image: '' },
-        { title: 'Pistache Supremo', description: 'Massa amanteigada de pistache e geleia de frutas vermelhas.', price: 130.0, image: '/assets/categorias/especiais.jpg' },
-        { title: 'Nozes Real', description: 'Massa de nozes com recheio de doce de leite e nozes picadas.', price: 120.0, image: '' }
-      ]
-    }
-  ];
+  sections: SectionWithBolos[] = [];
+  loading = true;
+  error = false;
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      if (params['buy'] === 'true') {
-        this.openModal(this.sections[0].items[0]);
-      } else if (params['bolo']) {
-        const boloName = params['bolo'];
-        for (const section of this.sections) {
-          const bolo = section.items.find(item => item.title.toLowerCase() === boloName.toLowerCase());
-          if (bolo) {
-            this.openModal(bolo);
-            break;
-          }
-        }
-      }
-    });
+    this.cardapioService.getSectionsWithBolos().subscribe({
+      next: (sections) => {
+        this.sections = sections;
+        this.loading = false;
+        this.cdr.detectChanges();
 
-    this.route.fragment.subscribe(fragment => {
-      if (fragment) {
+        // Aguarda renderização e depois lida com fragment + modal
         setTimeout(() => {
-          const element = document.getElementById(fragment);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }, 400); // Increased delay slightly
+          this.handleNavigation(sections);
+        }, 100);
+      },
+      error: () => {
+        this.loading = false;
+        this.error = true;
+        this.cdr.detectChanges();
       }
     });
   }
 
-  selectedBolo: any = null;
+  private handleNavigation(sections: SectionWithBolos[]) {
+    const fragment = this.route.snapshot.fragment;
+    const queryParams = this.route.snapshot.queryParams;
+    const pendingBolo = this.modalService.consume();
+
+    // Scroll para seção pelo fragment
+    if (fragment) {
+      const element = document.getElementById(fragment);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    // Determina bolo a abrir em modal
+    let boloToOpen: Bolo | null = null;
+
+    if (pendingBolo) {
+      // Veio do ModalService (best-sellers ou categories)
+      for (const section of sections) {
+        const found = section.items.find(
+          item => item.title.toLowerCase() === pendingBolo.toLowerCase()
+        );
+        if (found) { boloToOpen = found; break; }
+      }
+    } else if (queryParams['buy'] === 'true' && sections.length > 0 && sections[0].items.length > 0) {
+      boloToOpen = sections[0].items[0];
+    } else if (queryParams['bolo']) {
+      const boloName = queryParams['bolo'];
+      for (const section of sections) {
+        const found = section.items.find(
+          item => item.title.toLowerCase() === boloName.toLowerCase()
+        );
+        if (found) { boloToOpen = found; break; }
+      }
+    }
+
+    if (boloToOpen) {
+      // Abre modal após o scroll terminar
+      const delay = fragment ? 600 : 150;
+      setTimeout(() => {
+        this.openModal(boloToOpen!);
+        this.cdr.detectChanges();
+      }, delay);
+    }
+  }
+
+  selectedBolo: Bolo | null = null;
   modalOpen = false;
   showSuccess = false;
   selectedOption: number | 'custom' = 4;
@@ -116,7 +104,7 @@ export class Cardapio implements OnInit {
     return this.selectedOption === 'custom' && this.customWeight > 5;
   }
 
-  openModal(bolo: any) {
+  openModal(bolo: Bolo) {
     this.selectedBolo = bolo;
     this.modalOpen = true;
     this.showSuccess = false;
@@ -155,8 +143,9 @@ export class Cardapio implements OnInit {
     if (this.selectedBolo && !this.isWeightInvalid) {
       this.cartService.addItem({
         id: Math.random().toString(36).substr(2, 9),
+        boloId: this.selectedBolo.id,
         title: this.selectedBolo.title,
-        image: this.selectedBolo.image || '/assets/placeholder-cake.png',
+        image: this.imageService.getSrc(this.selectedBolo.image) || '/assets/placeholder-cake.png',
         weight: this.calculatedWeight,
         pricePerKg: this.selectedBolo.price,
         totalPrice: this.totalPrice
@@ -164,7 +153,7 @@ export class Cardapio implements OnInit {
 
       this.showSuccess = true;
       this.cdr.detectChanges();
-      
+
       setTimeout(() => {
         this.closeModal();
         this.cdr.detectChanges();

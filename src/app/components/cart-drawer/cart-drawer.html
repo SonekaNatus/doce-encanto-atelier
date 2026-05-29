@@ -20,11 +20,16 @@
               <div class="item-info">
                 <p class="item-name">{{ item.title }}</p>
                 <div class="item-details">
-                  <span class="item-qty">{{ item.weight.toFixed(3) }}kg</span>
-                  <span class="item-price">R$ {{ item.totalPrice.toFixed(2) }}</span>
+                  <span class="item-qty-label">{{ item.weight.toFixed(3) }}kg</span>
+                  <span class="item-price">R$ {{ (item.totalPrice * item.quantity).toFixed(2) }}</span>
+                </div>
+                <div class="item-qty-controls">
+                  <button class="qty-btn" (click)="decreaseQty(item.id)">−</button>
+                  <span class="qty-value">{{ item.quantity }}</span>
+                  <button class="qty-btn" (click)="increaseQty(item.id)">+</button>
                 </div>
               </div>
-              <button class="remove-btn" (click)="removeItem(item.id)">X</button>
+              <button class="remove-btn" (click)="removeItem(item.id)">✕</button>
             </div>
           }
         </div>

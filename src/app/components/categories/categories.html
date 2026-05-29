@@ -23,9 +23,7 @@
         aria-label="Ver categorias anteriores"
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
-          <path
-            d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
-          />
+          <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z" />
         </svg>
       </button>
 
@@ -46,17 +44,25 @@
           @for (slot of loopSlots; track slot.key) {
             <a
               class="category-card"
-              [href]="slot.cat.href"
+              [attr.href]="'/cardapio#' + slot.cat.sectionId"
               [attr.aria-label]="slot.cat.title + ' — Saiba mais'"
               [style.flex-basis.px]="cardWidthPx() || null"
               [style.width.px]="cardWidthPx() || null"
-              (click)="onCardClick($event)"
+              (click)="navigateToSection(slot.cat, $event)"
             >
               <span
                 class="category-card__bg"
-                [style.background-image]="'url(' + slot.cat.image + ')'"
+                [style.background-image]="slot.cat.image ? 'url(' + imageService.getSrc(slot.cat.image) + ')' : 'none'"
                 aria-hidden="true"
               ></span>
+              @if (slot.cat.image && !slot.cat.image.startsWith('data:')) {
+                <img
+                  [src]="imageService.getSrc(slot.cat.image)"
+                  style="display:none;position:absolute;pointer-events:none;width:0;height:0"
+                  aria-hidden="true"
+                  (error)="$any($event.target).previousElementSibling.style.backgroundImage = 'none'"
+                >
+              }
               <span class="category-card__overlay" aria-hidden="true"></span>
               <span class="category-card__content">
                 <span class="category-card__name">{{ slot.cat.title }}</span>
@@ -74,9 +80,7 @@
         aria-label="Ver próximas categorias"
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22" aria-hidden="true">
-          <path
-            d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
-          />
+          <path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z" />
         </svg>
       </button>
     </div>

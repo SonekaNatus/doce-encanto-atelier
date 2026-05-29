@@ -7,37 +7,39 @@
       </div>
       
       <div class="login-card__form-wrapper">
-        <form class="login-form" (submit)="onSubmit($event)">
+        <div class="login-form">
           <h3 class="login-form__title">{{ isLogin() ? 'Acesse sua conta' : 'Crie sua conta' }}</h3>
           
+          @if (errorMsg()) {
+            <div class="form-error-banner">{{ errorMsg() }}</div>
+          }
+
           @if (!isLogin()) {
             <div class="form-group">
               <label for="name">Nome completo</label>
-              <input type="text" id="name" placeholder="Ex: Maria Eduarda" required>
+              <input type="text" id="name" placeholder="Ex: Maria Eduarda" [(ngModel)]="name" required>
             </div>
           }
           
           <div class="form-group">
             <label for="email">E-mail</label>
-            <input type="email" id="email" placeholder="seu@email.com" required>
+            <input type="email" id="email" placeholder="seu@email.com" [(ngModel)]="email" required autocomplete="email">
           </div>
           
           <div class="form-group">
             <label for="password">Senha</label>
-            <input type="password" id="password" placeholder="••••••••" required>
+            <input type="password" id="password" placeholder="••••••••" [(ngModel)]="password" required autocomplete="current-password">
+            @if (!isLogin()) {
+              <span class="field-hint">Mínimo de 4 caracteres</span>
+            }
           </div>
           
-          @if (isLogin()) {
-            <div class="form-options">
-              <label class="checkbox-label">
-                <input type="checkbox"> Lembrar-me
-              </label>
-              <a href="javascript:void(0)" class="forgot-password">Esqueceu a senha?</a>
-            </div>
-          }
-          
-          <button type="submit" class="btn-primary">
-            {{ isLogin() ? 'Entrar' : 'Cadastrar' }}
+          <button type="button" class="btn-primary" (click)="onSubmit()" [disabled]="loading()">
+            @if (loading()) {
+              <span>Aguarde...</span>
+            } @else {
+              <span>{{ isLogin() ? 'Entrar' : 'Cadastrar' }}</span>
+            }
           </button>
           
           <div class="toggle-mode">
@@ -47,7 +49,7 @@
               <span>Já tem uma conta? <a href="javascript:void(0)" (click)="toggleMode()">Acesse aqui</a></span>
             }
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>

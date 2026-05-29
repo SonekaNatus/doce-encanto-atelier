@@ -332,3 +332,12 @@
         display: inline;
     }
 }
+.login-link__username {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: inherit;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

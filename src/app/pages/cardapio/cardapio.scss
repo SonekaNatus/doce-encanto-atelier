@@ -470,3 +470,25 @@
     font-size: 1.8rem;
   }
 }
+
+.section-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem 1rem;
+  background: #fdf6f0;
+  border-radius: 12px;
+  border: 2px dashed #d4b896;
+  color: #9e7e6a;
+  text-align: center;
+
+  svg { opacity: 0.5; }
+
+  p {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.6;
+  }
+}
